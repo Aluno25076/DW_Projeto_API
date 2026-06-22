@@ -11,6 +11,11 @@
         public int Id { get; set; }
 
         /// <summary>
+        /// o Nome da subscrição da base de dados
+        /// </summary>
+        public string Name { get; set; } = "";
+
+        /// <summary>
         /// A pagamanto/taxa da subscrição da base de dados
         /// </summary>
         public decimal Fee { get; set; }

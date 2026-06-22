@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DW_Projeto_API.Models;
 using DW_Projeto_API.Data;
+using DW_Projeto_API.Models.ViewModels;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -15,9 +16,15 @@ public class SubscriptionsController : ControllerBase
 
     // GET: api/Subscription
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Subscription>>> GetSubscription()
+    public async Task<ActionResult<IEnumerable<SubscriptionDTO>>> GetSubscription()
     {
-        return await _context.Subscriptions.ToListAsync();
+        // return await _context.Subscriptions.ToListAsync();
+        return await _context.Subscriptions.Select(s => new SubscriptionDTO
+        {
+            //Id = new s.Id,
+            Name = s.Name
+
+        }).OrderBy(s => s.Name).ToListAsync();
     }
 
     // GET: api/Subscription/5
@@ -25,6 +32,14 @@ public class SubscriptionsController : ControllerBase
     public async Task<ActionResult<Subscription>> GetSubscription(int id)
     {
         var subscription = await _context.Subscriptions.FindAsync(id);
+        /*
+        return await _context.Subscriptions.Where(s => s.Id == id).Select(s => new Subscription
+        {
+            //Id = new s.Id,
+            Name = s.Name
+
+        }).OrderBy(s => s.Name).ToListAsync();
+        */
 
         if (subscription == null)
         {

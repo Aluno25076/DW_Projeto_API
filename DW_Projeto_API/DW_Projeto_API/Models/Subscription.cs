@@ -15,6 +15,10 @@ namespace DW_Projeto_API.Models
         [Key]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "A {0} é obrigatória")]
+        [Display(Name = "Nome")]
+        [StringLength(50)]
+        public string Name { get; set; } = "";
 
         /// <summary>
         /// Pagamento da subcrição / taxa da subscrição

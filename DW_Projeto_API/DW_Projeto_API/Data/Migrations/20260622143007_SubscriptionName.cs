@@ -1,29 +1,30 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
 namespace DW_Projeto_API.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class SubscriptProgram : Migration
+    public partial class SubscriptionName : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "Program",
+            migrationBuilder.AddColumn<string>(
+                name: "Name",
                 table: "Subscriptions",
-                newName: "SubscriptProgram");
+                type: "nvarchar(50)",
+                maxLength: 50,
+                nullable: false,
+                defaultValue: "");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "SubscriptProgram",
-                table: "Subscriptions",
-                newName: "Program");
+            migrationBuilder.DropColumn(
+                name: "Name",
+                table: "Subscriptions");
         }
     }
 }
