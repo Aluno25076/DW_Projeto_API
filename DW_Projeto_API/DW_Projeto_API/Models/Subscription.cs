@@ -38,7 +38,7 @@ namespace DW_Projeto_API.Models
         /// Descrição do Programa da subscrição
         /// </summary>
         [StringLength(300)]
-        public string Program { get; set; } = "";
+        public string SubscriptProgram { get; set; } = "";
 
         /// <summary>
         /// Tipo de Duração da subscrição
