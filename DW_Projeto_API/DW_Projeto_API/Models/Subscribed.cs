@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace DW_Projeto_API.Models
 {
     /// <summary>
     /// Classe que do relacionamento entre membros e subscrições
     /// </summary>
-    //[PrimaryKey(nameof(MemberFK), nameof(SubscriptionFK))] //chave primaria composta
+    [PrimaryKey(nameof(MemberFK), nameof(SubscriptionFK))] //chave primaria composta
     public class Subscribed
     {
         /// <summary>
