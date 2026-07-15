@@ -23,7 +23,7 @@
         /// <summary>
         /// O programa da subscrição da base de dados
         /// </summary>
-        public string SubcriptProgram { get; set; }
+        public string SubscriptProgram { get; set; }
 
         /// <summary>
         /// A duração da subscrição da base de daods
@@ -32,12 +32,14 @@
         {
             Weekly,
             Monthly,
+            Quarterly,
+            Semesterly,
             Yearly
         }
 
         /// <summary>
         /// Os membors que se increveram na subscrição da base de dados 
         /// </summary>
-        public ICollection<Member> MembersList { get; set; } = new List<Member>();
+        public ICollection<Subscribed> Subscribers { get; set; } = new List<Subscribed>();
     }
 }

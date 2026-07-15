@@ -31,6 +31,6 @@ namespace DW_Projeto_API.Models
         /// </summary>
         [ForeignKey(nameof(Subscribed))]
         [Display(Name = "Subcrito")]
-        public string SubscribedFK { get; set; }
+        public string SubscribedFK { get; set; } = null!;
     }
 }

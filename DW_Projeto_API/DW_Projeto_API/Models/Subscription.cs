@@ -32,7 +32,7 @@ namespace DW_Projeto_API.Models
         /// </summary>
         [NotMapped]
         [Required(ErrorMessage = "A {0} é obrigatória")]
-        [Display(Name = "Taxa")]
+        [Display(Name = "Quota")]
         [StringLength(10)]
         [RegularExpression("[0-9]{1,7}([,.][0-9]{1,2})?",
            ErrorMessage = "A {0} deve ser um número com até 2 casas decimais")]
@@ -51,12 +51,14 @@ namespace DW_Projeto_API.Models
         {
             Weekly,
             Monthly,
+            Quarterly,
+            Semesterly,
             Yearly
         }
 
         /// <summary>
         /// Lista de Membros inscritos no plano/subscrição
         /// </summary>
-        public ICollection<Member> MembersList { get; set; } = [];
+        public ICollection<Subscribed> Subscribers { get; set; } = new List<Subscribed>();
     }
 }
