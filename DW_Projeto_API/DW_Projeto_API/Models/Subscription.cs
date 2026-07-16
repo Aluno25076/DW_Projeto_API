@@ -59,6 +59,6 @@ namespace DW_Projeto_API.Models
         /// <summary>
         /// Lista de Membros inscritos no plano/subscrição
         /// </summary>
-        public ICollection<Subscribed> Subscribers { get; set; } = new List<Subscribed>();
+        public ICollection<Member> Subscribers { get; set; } = [];
     }
 }

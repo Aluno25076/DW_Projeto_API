@@ -40,6 +40,6 @@
         /// <summary>
         /// Os membors que se increveram na subscrição da base de dados 
         /// </summary>
-        public ICollection<Subscribed> Subscribers { get; set; } = new List<Subscribed>();
+        public ICollection<Member> Subscribers { get; set; } = [];
     }
 }
