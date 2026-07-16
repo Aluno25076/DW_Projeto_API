@@ -29,8 +29,8 @@ namespace DW_Projeto_API.Models
         /// <summary>
         /// Subscrição do qual o membro está incrito
         /// </summary>
-        [ForeignKey(nameof(Subscribed))]
-        [Display(Name = "Subcrito")]
-        public string SubscribedFK { get; set; }
+        [ForeignKey(nameof(Subscription))]
+        [Display(Name = "Subscrição")]
+        public string SubscriptionFK { get; set; } = null!;
     }
 }

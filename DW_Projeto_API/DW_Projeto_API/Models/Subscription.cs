@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace DW_Projeto_API.Models
 {
@@ -14,6 +15,10 @@ namespace DW_Projeto_API.Models
         [Key]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "A {0} é obrigatória")]
+        [Display(Name = "Nome")]
+        [StringLength(50)]
+        public string Name { get; set; } = "";
 
         /// <summary>
         /// Pagamento da subcrição / taxa da subscrição
@@ -27,7 +32,7 @@ namespace DW_Projeto_API.Models
         /// </summary>
         [NotMapped]
         [Required(ErrorMessage = "A {0} é obrigatória")]
-        [Display(Name = "Taxa")]
+        [Display(Name = "Quota")]
         [StringLength(10)]
         [RegularExpression("[0-9]{1,7}([,.][0-9]{1,2})?",
            ErrorMessage = "A {0} deve ser um número com até 2 casas decimais")]
@@ -37,7 +42,7 @@ namespace DW_Projeto_API.Models
         /// Descrição do Programa da subscrição
         /// </summary>
         [StringLength(300)]
-        public string Program { get; set; } = "";
+        public string SubscriptProgram { get; set; } = "";
 
         /// <summary>
         /// Tipo de Duração da subscrição
@@ -46,12 +51,14 @@ namespace DW_Projeto_API.Models
         {
             Weekly,
             Monthly,
+            Quarterly,
+            Semesterly,
             Yearly
         }
 
         /// <summary>
         /// Lista de Membros inscritos no plano/subscrição
         /// </summary>
-        public ICollection<Member> MembersList { get; set; } = [];
+        public ICollection<Member> Subscribers { get; set; } = [];
     }
 }

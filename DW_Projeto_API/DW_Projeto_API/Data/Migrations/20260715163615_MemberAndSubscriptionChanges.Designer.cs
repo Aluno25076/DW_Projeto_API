@@ -4,6 +4,7 @@ using DW_Projeto_API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DW_Projeto_API.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260715163615_MemberAndSubscriptionChanges")]
+    partial class MemberAndSubscriptionChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,6 +57,24 @@ namespace DW_Projeto_API.Data.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("MyUser");
 
                     b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("DW_Projeto_API.Models.Subscribed", b =>
+                {
+                    b.Property<int>("MemberFK")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubscriptionFK")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("MemberFK", "SubscriptionFK");
+
+                    b.HasIndex("SubscriptionFK");
+
+                    b.ToTable("Subscribers");
                 });
 
             modelBuilder.Entity("DW_Projeto_API.Models.Subscription", b =>
@@ -295,16 +316,30 @@ namespace DW_Projeto_API.Data.Migrations
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("SubscriptionFK")
+                    b.Property<string>("SubscribedFK")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SubscriptionId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("SubscriptionId");
-
                     b.HasDiscriminator().HasValue("Member");
+                });
+
+            modelBuilder.Entity("DW_Projeto_API.Models.Subscribed", b =>
+                {
+                    b.HasOne("DW_Projeto_API.Models.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DW_Projeto_API.Models.Subscription", "Subscription")
+                        .WithMany("Subscribers")
+                        .HasForeignKey("SubscriptionFK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Member");
+
+                    b.Navigation("Subscription");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -356,13 +391,6 @@ namespace DW_Projeto_API.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("DW_Projeto_API.Models.Member", b =>
-                {
-                    b.HasOne("DW_Projeto_API.Models.Subscription", null)
-                        .WithMany("Subscribers")
-                        .HasForeignKey("SubscriptionId");
                 });
 
             modelBuilder.Entity("DW_Projeto_API.Models.Subscription", b =>
