@@ -1,8 +1,8 @@
+using DW_Projeto_API.Data;
+using DW_Projeto_API.Models;
+using DW_Projeto_API.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DW_Projeto_API.Models;
-using DW_Projeto_API.Data;
-using DW_Projeto_API.Models.ViewModels;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -18,28 +18,33 @@ public class SubscriptionsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SubscriptionDTO>>> GetSubscription()
     {
-        // return await _context.Subscriptions.ToListAsync();
-        return await _context.Subscriptions.Select(s => new SubscriptionDTO
-        {
-            //Id = new s.Id,
-            Name = s.Name
+        /* _context.Subscriptions.ToListAsync() its a LINQ command that means
+          * SELECT *
+          * FROM Subscriptions 
+          */
 
+        return await _context.Subscriptions.Select(s => new SubscriptionDTO {
+            Id = s.Id,
+            Name = s.Name
         }).OrderBy(s => s.Name).ToListAsync();
     }
 
     // GET: api/Subscription/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Subscription>> GetSubscription(int id)
+    public async Task<ActionResult<SubscriptionSimplierDTO>> GetSubscription(int id)
     {
-        var subscription = await _context.Subscriptions.FindAsync(id);
-        /*
-        return await _context.Subscriptions.Where(s => s.Id == id).Select(s => new Subscription
-        {
-            //Id = new s.Id,
-            Name = s.Name
+        // in LINQ
+        // _context.Subscriptions.FindAsync(id); means
+        // SELECT *
+        // FROM Subscriptions
+        // WHERE Id = id
 
-        }).OrderBy(s => s.Name).ToListAsync();
-        */
+        var subscription = await _context.Subscriptions
+                                                .Where(s => s.Id == id)
+                                                .Select(s => new SubscriptionSimplierDTO
+                                                {
+                                                    Name = s.Name,
+                                                }).FirstOrDefaultAsync();
 
         if (subscription == null)
         {
@@ -83,10 +88,28 @@ public class SubscriptionsController : ControllerBase
     // POST: api/Subscription
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Subscription>> PostSubscription(Subscription subscription)
+    public async Task<ActionResult<SubscriptionSimplierDTO>> PostSubscription(SubscriptionSimplierDTO subscriptionName)
     {
-        _context.Subscriptions.Add(subscription);
-        await _context.SaveChangesAsync();
+        Subscription subscription = new()
+        {
+            Name = subscriptionName.Name,
+        };
+
+        try {
+            _context.Subscriptions.Add(subscription);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception)
+        {
+            //throw;
+            /* use 'throw' ONLY in development environment
+             * NEVER, NEVER in 'production', 
+             * because it expose too much data related with your program
+             */
+            return BadRequest();
+        }
+
+        
 
         return CreatedAtAction("GetSubscription", new { id = subscription.Id }, subscription);
     }
