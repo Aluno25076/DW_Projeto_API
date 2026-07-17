@@ -9,5 +9,8 @@ namespace DW_Projeto_API.Data
         public DbSet<MyUser> AppUsers { get; set; }
         public DbSet<Member> Members { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Field> Fields { get; set; }
+        public DbSet<Match> Matches { get; set; }
     }
 }

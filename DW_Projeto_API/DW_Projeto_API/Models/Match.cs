@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace DW_Projeto_API.Models
 {
@@ -29,14 +30,18 @@ namespace DW_Projeto_API.Models
         /// </summary>
         [Required(ErrorMessage = "O {0} é obrigatório")]
         [Display(Name = "Campo")]
-        public int FieldId { get; set; }
+        public int FieldFK { get; set; }
+
+        [ForeignKey(nameof(FieldFK))]
         public Field Field { get; set; } = null!;
 
         /// <summary>
         /// Funcionário responsável pelo jogo (ex: árbitro) - FK
         /// </summary>
         [Display(Name = "Funcionário")]
-        public int? EmployeeId { get; set; }
+        public int? EmployeeFK { get; set; }
+
+        [ForeignKey(nameof(EmployeeFK))]
         public Employee? Employee { get; set; }
 
         /// <summary>
