@@ -1,4 +1,5 @@
 using DW_Projeto_API.Data;
+using DW_Projeto_API.Data.Seed;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +21,9 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
+
+    // Invocar o seed da BD
+    app.UseItToSeedSqlServer();
 }
 else
 {
