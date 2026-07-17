@@ -37,5 +37,13 @@ namespace DW_Projeto_API.Models
         [StringLength(19)]
         [RegularExpression(@"\+?[0-9]{9,18}", ErrorMessage = "O número de telemóvel deve conter apenas dígitos (entre 9 e 18) e pode começar com um sinal de mais.")]
         public string? CellPhone { get; set; }
+
+        /// <summary>
+        /// 'nome de utilizador' do Membro, 
+        /// que será utilizado para autenticação e login na aplicação
+        /// Fará a 'ponte' entre os dados da autenticação e os dados do negócio
+        /// </summary>
+        [StringLength(50)]
+        public string UserName { get; set; } = "";
     }
 }
