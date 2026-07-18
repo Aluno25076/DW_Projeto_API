@@ -45,9 +45,9 @@ namespace DW_Projeto_API.Models
         public string SubscriptProgram { get; set; } = "";
 
         /// <summary>
-        /// Tipo de Duração da subscrição
+        /// Tipos possíveis de duração da subscrição
         /// </summary>
-        public enum Duration
+        public enum DurationTime
         {
             Weekly,
             Monthly,
@@ -55,6 +55,13 @@ namespace DW_Projeto_API.Models
             Semesterly,
             Yearly
         }
+
+        /// <summary>
+        /// Tipo de Duração da subscrição
+        /// </summary>
+        [Required(ErrorMessage = "A {0} é obrigatória")]
+        [Display(Name = "Duração")]
+        public DurationTime Duration { get; set; }
 
         /// <summary>
         /// Lista de Membros inscritos no plano/subscrição

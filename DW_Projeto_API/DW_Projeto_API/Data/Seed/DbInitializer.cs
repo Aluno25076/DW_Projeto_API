@@ -32,8 +32,8 @@ namespace DW_Projeto_API.Data.Seed
             if (!dbContext.Subscriptions.Any())
             {
                 subscriptions = [
-                    new Subscription{ Name="Novatos",  Fee=49.99M, SubscriptProgram="Começe a jogar"},
-                    new Subscription{ Name="Experts",  Fee=149.99M, SubscriptProgram="Alta competição"}
+                   new Subscription{ Name="Novatos",  Fee=49.99M, SubscriptProgram="Começe a jogar", Duration = Subscription.DurationTime.Monthly},
+                    new Subscription{ Name="Experts",  Fee=149.99M, SubscriptProgram="Alta competição", Duration = Subscription.DurationTime.Quarterly}
                 ];
                 await dbContext.Subscriptions.AddRangeAsync(subscriptions);
                 haAdicao = true;
@@ -53,20 +53,45 @@ namespace DW_Projeto_API.Data.Seed
             }
 
 
-            /* TODO
-            // Se não houver campos, cria-os
-            var fields = Array.Empty<>(Field);
+
+            // Se não houver Campos, cria-os
+            var fields = Array.Empty<Field>();
             if (!dbContext.Fields.Any())
             {
                 fields = [
-                  
-                    ];
+                    new Field { Name = "Campo Central", Surface = Field.SurfaceType.Clay, IsIndoor = false },
+                    new Field { Name = "Campo 2", Surface = Field.SurfaceType.HardCourt, IsIndoor = false },
+                    new Field { Name = "Pavilhão A", Surface = Field.SurfaceType.Synthetic, IsIndoor = true }
+                ];
                 await dbContext.Fields.AddRangeAsync(fields);
                 haAdicao = true;
             }
-            */
 
-            //TODO - Match e employees
+            // Se não houver Funcionários, cria-os
+            var employees = Array.Empty<Employee>();
+            if (!dbContext.Employees.Any())
+            {
+                employees = [
+                    new Employee { Name = "Carlos Ferreira", Position = "Treinador", Salary = 1400.00m, HireDate = new DateTime(2022, 9, 1) },
+                    new Employee { Name = "Rita Almeida", Position = "Rececionista", Salary = 1000.00m, HireDate = new DateTime(2023, 3, 15) }
+                ];
+                await dbContext.Employees.AddRangeAsync(employees);
+                haAdicao = true;
+            }
+
+            // Se não houver Jogos, cria-os
+            // (associados aos campos e funcionários criados acima)
+            if (!dbContext.Matches.Any() && fields.Length > 0 && employees.Length > 0)
+            {
+                var matches = new Match[] {
+                    new Match { MatchDate = DateTime.Now.AddDays(2).Date.AddHours(10), DurationMinutes = 90,
+                       Field = fields[0], Employee = employees[0] },
+                    new Match { MatchDate = DateTime.Now.AddDays(3).Date.AddHours(18), DurationMinutes = 60,
+                       Field = fields[2] }
+                };
+                await dbContext.Matches.AddRangeAsync(matches);
+                haAdicao = true;
+            }
 
 
             try
