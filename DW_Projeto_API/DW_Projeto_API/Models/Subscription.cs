@@ -60,10 +60,5 @@ namespace DW_Projeto_API.Models
         /// Lista de Membros inscritos no plano/subscrição
         /// </summary>
         public ICollection<Member> Subscribers { get; set; } = [];
-
-        /// <summary>
-        /// Lista de Matches que o membro participou/vai participar
-        /// </summary>
-        //public ICollection<Match> Matches { get; set; } = [];
     }
 }

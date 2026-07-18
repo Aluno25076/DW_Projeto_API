@@ -32,5 +32,10 @@ namespace DW_Projeto_API.Models
         [ForeignKey(nameof(Subscription))]
         [Display(Name = "Subscrição")]
         public string SubscriptionFK { get; set; } = null!;
+
+        /// <summary>
+        /// Lista de Matches que o membro participou/vai participar
+        /// </summary>
+        //public ICollection<Match> Matches { get; set; } = [];
     }
 }
