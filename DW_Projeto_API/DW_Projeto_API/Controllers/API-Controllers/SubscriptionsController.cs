@@ -1,11 +1,13 @@
 using DW_Projeto_API.Data;
 using DW_Projeto_API.Models;
 using DW_Projeto_API.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(AuthenticationSchemes = "Bearer")] // Autenticação por JWT
 public class SubscriptionsController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
@@ -16,6 +18,7 @@ public class SubscriptionsController : ControllerBase
 
     // GET: api/Subscription
     [HttpGet]
+    [AllowAnonymous] 
     public async Task<ActionResult<IEnumerable<SubscriptionDTO>>> GetSubscription()
     {
         /* _context.Subscriptions.ToListAsync() its a LINQ command that means
@@ -31,6 +34,7 @@ public class SubscriptionsController : ControllerBase
 
     // GET: api/Subscription/5
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public async Task<ActionResult<SubscriptionSimplierDTO>> GetSubscription(int id)
     {
         // in LINQ
@@ -54,6 +58,7 @@ public class SubscriptionsController : ControllerBase
         return subscription;
     }
 
+    /*
     // PUT: api/Subscription/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
@@ -84,6 +89,7 @@ public class SubscriptionsController : ControllerBase
 
         return NoContent();
     }
+    */
 
     // POST: api/Subscription
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -114,6 +120,7 @@ public class SubscriptionsController : ControllerBase
         return CreatedAtAction("GetSubscription", new { id = subscription.Id }, subscription);
     }
 
+    /*
     // DELETE: api/Subscription/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteSubscription(int? id)
@@ -134,4 +141,5 @@ public class SubscriptionsController : ControllerBase
     {
         return _context.Subscriptions.Any(e => e.Id == id);
     }
+    */
 }

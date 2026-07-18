@@ -4,6 +4,7 @@ using DW_Projeto_API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,99 +12,18 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DW_Projeto_API.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260717143325_UserNameMyUsers")]
+    partial class UserNameMyUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.10")
+                .HasAnnotation("ProductVersion", "10.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("DW_Projeto_API.Models.Employee", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("HireDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Position")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<decimal>("Salary")
-                        .HasPrecision(9, 2)
-                        .HasColumnType("decimal(9,2)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Employees");
-                });
-
-            modelBuilder.Entity("DW_Projeto_API.Models.Field", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsIndoor")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("Surface")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Fields");
-                });
-
-            modelBuilder.Entity("DW_Projeto_API.Models.Match", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DurationMinutes")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("EmployeeFK")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FieldFK")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("MatchDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeFK");
-
-                    b.HasIndex("FieldFK");
-
-                    b.ToTable("Matches");
-                });
 
             modelBuilder.Entity("DW_Projeto_API.Models.MyUser", b =>
                 {
@@ -377,10 +297,7 @@ namespace DW_Projeto_API.Data.Migrations
                 {
                     b.HasBaseType("DW_Projeto_API.Models.MyUser");
 
-                    b.Property<int?>("MatchId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MemberNumber")
+                    b.Property<int>("MemberId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RegistrationDate")
@@ -393,28 +310,9 @@ namespace DW_Projeto_API.Data.Migrations
                     b.Property<int?>("SubscriptionId")
                         .HasColumnType("int");
 
-                    b.HasIndex("MatchId");
-
                     b.HasIndex("SubscriptionId");
 
                     b.HasDiscriminator().HasValue("Member");
-                });
-
-            modelBuilder.Entity("DW_Projeto_API.Models.Match", b =>
-                {
-                    b.HasOne("DW_Projeto_API.Models.Employee", "Employee")
-                        .WithMany("Matches")
-                        .HasForeignKey("EmployeeFK");
-
-                    b.HasOne("DW_Projeto_API.Models.Field", "Field")
-                        .WithMany("Matches")
-                        .HasForeignKey("FieldFK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("Field");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -470,28 +368,9 @@ namespace DW_Projeto_API.Data.Migrations
 
             modelBuilder.Entity("DW_Projeto_API.Models.Member", b =>
                 {
-                    b.HasOne("DW_Projeto_API.Models.Match", null)
-                        .WithMany("Participants")
-                        .HasForeignKey("MatchId");
-
                     b.HasOne("DW_Projeto_API.Models.Subscription", null)
                         .WithMany("Subscribers")
                         .HasForeignKey("SubscriptionId");
-                });
-
-            modelBuilder.Entity("DW_Projeto_API.Models.Employee", b =>
-                {
-                    b.Navigation("Matches");
-                });
-
-            modelBuilder.Entity("DW_Projeto_API.Models.Field", b =>
-                {
-                    b.Navigation("Matches");
-                });
-
-            modelBuilder.Entity("DW_Projeto_API.Models.Match", b =>
-                {
-                    b.Navigation("Participants");
                 });
 
             modelBuilder.Entity("DW_Projeto_API.Models.Subscription", b =>
