@@ -1,6 +1,12 @@
+using System.Text;
+using System.Text.Json.Serialization;
 using DW_Projeto_API.Data;
+using DW_Projeto_API.Data.Seed;
+using DW_Projeto_API.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,12 +20,68 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+// configurações do Swagger
+builder.Services.AddSwaggerGen(c => {
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Minha API de gestão de Fotos",
+        Version = "v1",
+        Description = "API para gestão de categorias, fotografias e utilizadores"
+    });
+
+    /*  // Caminho para o XML gerado
+        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        var xmlPath = Path.Combine(AppContext.BaseDirectory,xmlFile);
+        c.IncludeXmlComments(xmlPath);
+    */
+
+});
+
+// configurações do JWT
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
+
+builder.Services.AddAuthentication(options => { })
+   .AddCookie("Cookies", options => {
+       options.LoginPath = "/Identity/Account/Login";
+       options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+   })
+   .AddJwtBearer("Bearer", options => {
+       options.TokenValidationParameters = new TokenValidationParameters
+       {
+           ValidateIssuer = true,
+           ValidateAudience = true,
+           ValidateLifetime = true,
+           ValidateIssuerSigningKey = true,
+           ValidIssuer = jwtSettings["Issuer"],
+           ValidAudience = jwtSettings["Audience"],
+           IssuerSigningKey = new SymmetricSecurityKey(key)
+       };
+   });
+
+
+// configuração do JWT
+builder.Services.AddScoped<TokenService>();
+
+// Eliminar a proteção de 'ciclos' qd se faz uma pesquisa que envolva um relacionamento 1-N em Linq
+// https://code-maze.com/aspnetcore-handling-circular-references-when-working-with-json/
+// https://marcionizzola.medium.com/como-resolver-jsonexception-a-possible-object-cycle-was-detected-27e830ea78e5
+builder.Services.AddControllers()
+                .AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
+
+    // Invocar o seed da BD
+    app.UseItToSeedSqlServer();
+
+    // iniciar o 'middleware' do Swagger
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 else
 {

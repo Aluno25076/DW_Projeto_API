@@ -15,7 +15,7 @@ namespace DW_Projeto_API.Models
         /// <summary>
         /// Identificador atribuido para cada membro, para o identificar de forma unica 
         /// </summary>
-        public int MemberId { get; set; }
+        public int MemberNumber { get; set; }
 
         /// <summary>
         /// Data e hora da matricula do Membro

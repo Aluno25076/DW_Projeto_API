@@ -23,6 +23,6 @@
         /// <summary>
         /// O programa da subscrição da base de dados
         /// </summary>
-        public string SubcriptProgram { get; set; }
+        public string SubcriptProgram { get; set; } = "";
     }
 }

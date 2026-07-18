@@ -23,7 +23,7 @@
         /// <summary>
         /// O programa da subscrição da base de dados
         /// </summary>
-        public string SubscriptProgram { get; set; }
+        public string SubscriptProgram { get; set; } = "";
 
         /// <summary>
         /// A duração da subscrição da base de daods
