@@ -71,7 +71,7 @@ namespace DW_Projeto_API.Controllers.API
         public async Task<ActionResult<Match>> PostMatch(Match match)
         {
             // verificar se o campo existe
-            var fieldExists = await _context.Fields.AnyAsync(f => f.Id == match.FieldFK);
+            var fieldExists = await _context.TennisFields.AnyAsync(f => f.Id == match.FieldFK);
             if (!fieldExists) return BadRequest("O campo indicado não existe");
 
             try

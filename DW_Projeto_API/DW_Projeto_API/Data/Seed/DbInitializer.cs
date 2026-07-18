@@ -56,14 +56,14 @@ namespace DW_Projeto_API.Data.Seed
 
             // Se não houver Campos, cria-os
             var fields = Array.Empty<Field>();
-            if (!dbContext.Fields.Any())
+            if (!dbContext.TennisFields.Any())
             {
                 fields = [
                     new Field { Name = "Campo Central", Surface = Field.SurfaceType.Clay, IsIndoor = false },
                     new Field { Name = "Campo 2", Surface = Field.SurfaceType.HardCourt, IsIndoor = false },
                     new Field { Name = "Pavilhão A", Surface = Field.SurfaceType.Synthetic, IsIndoor = true }
                 ];
-                await dbContext.Fields.AddRangeAsync(fields);
+                await dbContext.TennisFields.AddRangeAsync(fields);
                 haAdicao = true;
             }
 

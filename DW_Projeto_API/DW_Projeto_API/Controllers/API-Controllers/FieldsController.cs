@@ -22,7 +22,7 @@ namespace DW_Projeto_API.Controllers.API
         public async Task<ActionResult<IEnumerable<FieldDTO>>> GetFields()
         {
             /* SELECT * FROM Fields ORDER BY Name */
-            return await _context.Fields
+            return await _context.TennisFields
                                  .Select(f => new FieldDTO
                                  {
                                      Id = f.Id,
@@ -38,7 +38,7 @@ namespace DW_Projeto_API.Controllers.API
         [HttpGet("{id}")]
         public async Task<ActionResult<FieldDTO>> GetField(int id)
         {
-            var field = await _context.Fields
+            var field = await _context.TennisFields
                                       .Where(f => f.Id == id)
                                       .Select(f => new FieldDTO
                                       {
@@ -72,7 +72,7 @@ namespace DW_Projeto_API.Controllers.API
 
             try
             {
-                _context.Fields.Add(field);
+                _context.TennisFields.Add(field);
                 await _context.SaveChangesAsync();
             }
             catch (Exception)
@@ -88,10 +88,10 @@ namespace DW_Projeto_API.Controllers.API
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteField(int id)
         {
-            var field = await _context.Fields.FindAsync(id);
+            var field = await _context.TennisFields.FindAsync(id);
             if (field == null) return NotFound();
 
-            _context.Fields.Remove(field);
+            _context.TennisFields.Remove(field);
             await _context.SaveChangesAsync();
             return NoContent();
         }
