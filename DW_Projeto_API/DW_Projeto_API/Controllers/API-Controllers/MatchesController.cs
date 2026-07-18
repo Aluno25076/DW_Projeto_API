@@ -19,7 +19,7 @@ namespace DW_Projeto_API.Controllers.API
 
         // GET: api/Matches
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MatchDTO>>> GetMatches()
+   public async Task<ActionResult<IEnumerable<MatchDTO>>> GetMatches()
         {
             /* pesquisa com relacionamentos, como no PhotosController do professor:
              * SELECT m.*, f.Name, e.Name
@@ -34,7 +34,9 @@ namespace DW_Projeto_API.Controllers.API
                                      DurationMinutes = m.DurationMinutes,
                                      Field = m.Field.Name,
                                      Employee = m.Employee != null ? m.Employee.Name : null,
-                                     Participants = m.Participants.Select(p => p.Name).ToList()
+                                     Participants = m.Participants.Select(p => p.Name).ToList(),   
+                                     Result = m.Result != null ? m.Result.SetScores : null,        
+                                     Winner = m.Result != null ? m.Result.Winner : null       
                                  })
                                  .OrderBy(m => m.MatchDate)
                                  .ToListAsync();
@@ -53,7 +55,10 @@ namespace DW_Projeto_API.Controllers.API
                                           DurationMinutes = m.DurationMinutes,
                                           Field = m.Field.Name,
                                           Employee = m.Employee != null ? m.Employee.Name : null,
-                                          Participants = m.Participants.Select(p => p.Name).ToList()
+                                          Participants = m.Participants.Select(p => p.Name).ToList(),  
+                                          Result = m.Result != null ? m.Result.SetScores : null,    
+                                          Winner = m.Result != null ? m.Result.Winner : null        
+
                                       })
                                       .FirstOrDefaultAsync();
 

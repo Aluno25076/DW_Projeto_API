@@ -11,6 +11,8 @@
         public int DurationMinutes { get; set; }
         public string Field { get; set; } = "";
         public string? Employee { get; set; }
+        public string? Result { get; set; }
+        public string? Winner { get; set; }
         public ICollection<string> Participants { get; set; } = [];
     }
 }
