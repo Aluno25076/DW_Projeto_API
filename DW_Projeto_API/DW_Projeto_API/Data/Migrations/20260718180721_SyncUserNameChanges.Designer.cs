@@ -4,6 +4,7 @@ using DW_Projeto_API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DW_Projeto_API.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260718180721_SyncUserNameChanges")]
+    partial class SyncUserNameChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,9 +155,6 @@ namespace DW_Projeto_API.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Duration")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Fee")
                         .HasPrecision(9, 2)
                         .HasColumnType("decimal(9,2)");
@@ -172,21 +172,6 @@ namespace DW_Projeto_API.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Subscriptions");
-                });
-
-            modelBuilder.Entity("MatchMember", b =>
-                {
-                    b.Property<int>("MatchesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ParticipantsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MatchesId", "ParticipantsId");
-
-                    b.HasIndex("ParticipantsId");
-
-                    b.ToTable("MatchMember");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -395,16 +380,25 @@ namespace DW_Projeto_API.Data.Migrations
                 {
                     b.HasBaseType("DW_Projeto_API.Models.MyUser");
 
+                    b.Property<int?>("MatchId")
+                        .HasColumnType("int");
+
                     b.Property<int>("MemberNumber")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SubscriptionFK")
+                    b.Property<string>("SubscriptionFK")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SubscriptionId")
                         .HasColumnType("int");
 
-                    b.HasIndex("SubscriptionFK");
+                    b.HasIndex("MatchId");
+
+                    b.HasIndex("SubscriptionId");
 
                     b.HasDiscriminator().HasValue("Member");
                 });
@@ -424,21 +418,6 @@ namespace DW_Projeto_API.Data.Migrations
                     b.Navigation("Employee");
 
                     b.Navigation("Field");
-                });
-
-            modelBuilder.Entity("MatchMember", b =>
-                {
-                    b.HasOne("DW_Projeto_API.Models.Match", null)
-                        .WithMany()
-                        .HasForeignKey("MatchesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DW_Projeto_API.Models.Member", null)
-                        .WithMany()
-                        .HasForeignKey("ParticipantsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -494,13 +473,13 @@ namespace DW_Projeto_API.Data.Migrations
 
             modelBuilder.Entity("DW_Projeto_API.Models.Member", b =>
                 {
-                    b.HasOne("DW_Projeto_API.Models.Subscription", "Subscription")
-                        .WithMany("Subscribers")
-                        .HasForeignKey("SubscriptionFK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("DW_Projeto_API.Models.Match", null)
+                        .WithMany("Participants")
+                        .HasForeignKey("MatchId");
 
-                    b.Navigation("Subscription");
+                    b.HasOne("DW_Projeto_API.Models.Subscription", null)
+                        .WithMany("Subscribers")
+                        .HasForeignKey("SubscriptionId");
                 });
 
             modelBuilder.Entity("DW_Projeto_API.Models.Employee", b =>
@@ -511,6 +490,11 @@ namespace DW_Projeto_API.Data.Migrations
             modelBuilder.Entity("DW_Projeto_API.Models.Field", b =>
                 {
                     b.Navigation("Matches");
+                });
+
+            modelBuilder.Entity("DW_Projeto_API.Models.Match", b =>
+                {
+                    b.Navigation("Participants");
                 });
 
             modelBuilder.Entity("DW_Projeto_API.Models.Subscription", b =>

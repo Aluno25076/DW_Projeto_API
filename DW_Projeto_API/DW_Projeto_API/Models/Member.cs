@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace DW_Projeto_API.Models
 {
@@ -21,21 +23,28 @@ namespace DW_Projeto_API.Models
         /// Data e hora da matricula do Membro
         /// </summary>
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatorio!")]
-        [Display(Name = "Data de nascimento")]
+        [Display(Name = "Data de registo")]
         [DataType(DataType.Date)]
         public DateTime RegistrationDate { get; set; } = DateTime.Now;
 
 
         /// <summary>
-        /// Subscrição do qual o membro está incrito
+        /// FK para a Subscrição na qual o membro está inscrito
         /// </summary>
         [ForeignKey(nameof(Subscription))]
         [Display(Name = "Subscrição")]
-        public string SubscriptionFK { get; set; } = null!;
+        public int SubscriptionFK { get; set; }
+
+        /// <summary>
+        /// Subscrição na qual o membro está inscrito
+        /// </summary>
+        [ValidateNever]
+        [Display(Name = "Subscrição")]
+        public Subscription Subscription { get; set; } = null!;
 
         /// <summary>
         /// Lista de Matches que o membro participou/vai participar
         /// </summary>
-        //public ICollection<Match> Matches { get; set; } = [];
+        public ICollection<Match> Matches { get; set; } = [];
     }
 }
