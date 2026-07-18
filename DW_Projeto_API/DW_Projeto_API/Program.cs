@@ -24,9 +24,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSwaggerGen(c => {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "Minha API de gestão de Fotos",
+        Title = "Minha API do Clube de ténis",
         Version = "v1",
-        Description = "API para gestão de categorias, fotografias e utilizadores"
+        Description = "API para gestão Campos, utilizadores , subscrições e partidas"
     });
 
     /*  // Caminho para o XML gerado
