@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
+
 namespace DW_Projeto_API.Models
 {
     public class Match
@@ -28,20 +29,30 @@ namespace DW_Projeto_API.Models
         /// <summary>
         /// Campo (Field) onde o jogo se realiza - FK
         /// </summary>
+        [ForeignKey(nameof(Field))]
         [Required(ErrorMessage = "O {0} é obrigatório")]
         [Display(Name = "Campo")]
         public int FieldFK { get; set; }
 
-        [ForeignKey(nameof(FieldFK))]
+        /// <summary>
+        /// Campo onde o jogo se realiza
+        /// </summary>
+        [ValidateNever]
+        [Display(Name = "Campo")]
         public Field Field { get; set; } = null!;
 
         /// <summary>
-        /// Funcionário responsável pelo jogo (ex: árbitro) - FK
+        /// FK para o Funcionário responsável pelo jogo (opcional)
         /// </summary>
+        [ForeignKey(nameof(Employee))]
         [Display(Name = "Funcionário")]
         public int? EmployeeFK { get; set; }
 
-        [ForeignKey(nameof(EmployeeFK))]
+        /// <summary>
+        /// Funcionário responsável pelo jogo
+        /// </summary>
+        [ValidateNever]
+        [Display(Name = "Funcionário")]
         public Employee? Employee { get; set; }
 
         /// <summary>
