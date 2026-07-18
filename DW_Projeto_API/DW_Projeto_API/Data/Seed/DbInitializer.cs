@@ -39,22 +39,19 @@ namespace DW_Projeto_API.Data.Seed
                 haAdicao = true;
             }
 
-
-
-            /* tratar do warnig no myUsers 
             // Se não houver MyUser, cria-os
             var myUsers = Array.Empty<MyUser>();
-            if (!dbContext.Members.Any())
+            if (!dbContext.AppUsers.Any())
             {
                 myUsers = [
                     new MyUser { Name="João Silva", BirthDate=DateOnly.Parse("1999-12-31"),CellPhone="92345687"},
                     new MyUser { Name="Maria Santos", BirthDate=DateOnly.Parse("2000-12-15"),CellPhone="9612347"  },
                     new MyUser { Name="Ana Costa", BirthDate=DateOnly.Parse("2000-12-15"),CellPhone=""  }
                   ];
-                await dbContext.Members.AddRangeAsync(myUsers);
+                await dbContext.AppUsers.AddRangeAsync(myUsers);
                 haAdicao = true;
             }
-            */
+
 
             /* TODO
             // Se não houver campos, cria-os
